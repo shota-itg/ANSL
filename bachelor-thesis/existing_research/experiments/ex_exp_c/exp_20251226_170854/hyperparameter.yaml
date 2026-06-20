@@ -1,0 +1,57 @@
+# configs/hyperparameter.yaml
+
+# 最適化アルゴリズム
+optimization:
+  learning_rate: 1e-4 # 1e-6 ~ 1e-2
+  train_batch_size: 64 # 16, 32, 64, 128, 256, 512 # （学習フェーズでは小さめのバッチサイズ）
+  inference_batch_size: 256 # 16, 32, 64, 128, 256, 512, 1024 # （推論フェーズは大きめのバッチサイズ）
+  optimizer: Adamax # Adam, Adamax, AdamW, SGD, RMSprop
+  weight_decay: 0 # 0, 1e-5, 0.0001(default), 1e-3 # （重み減衰）
+
+# モデル構造
+architecture:
+  inputs_dim: 210 # (N +1) *NP_2
+  hidden_dim: 6300 # ((N +1) *NP_2) *NP_2
+  hidden_depth: 3
+  outputs_dim: 1260 # (N +1) *N *NP_2
+  dropout: 0.0 # 0.0(default), 0.1, 0.2, 0,3, 0.4, 0.5 # （学習中にランダムにニューロンを無効化）
+  activation: ReLU # ReLU(default), LeakyReLU, GELU, Sigmoid, Tanh, None
+  normalization: None # BatchNorm, LayerNorm, None(default)
+
+# 学習率スケジューラ
+schedule:
+  lr_scheduler: None # CosineAnnealingLR, StepLR, ReduceLROnPlateau, None(default)
+  warmup_steps: 1000 # 0(null), 1000(default) # （Transformer系やAdam系のoptimizerで、最初の数千ステップだけLRを上げる）
+
+  StepLR: 
+    step_size: 10 # 10(default)
+    gamma: 0.1 # 0.1(default)
+    last_epoch: -1 # -1(default)
+  
+  CosineAnnealingLR: 
+    T_max: 10 # 10(default) # （学習率が最小値に達するまでのエポック数）
+    eta_min: 0.0 # 0.0(default) # （学習率の最小値）
+    last_epoch: -1 # -1(default)
+  
+  ReduceLROnPlateau: 
+    mode: min # max or min(default) # （評価指標を最小化する場合は'min'、最大化する場合は'max'）
+    factor: 0.1 # 0.1(default) # （学習率を減衰させる倍率）
+    patience: 10 # 10(default) # （学習率を減衰させるまでに待つエポック数）
+    threshold: 1e-4 # 1e-4(default) # （改善とみなされる評価指標の変化量の閾値）
+    threshold_mode: rel # rel(default) # （閾値の解釈方法（'rel'は相対的な変化量、'abs'は絶対的な変化量））
+    cooldown: 0 # 0(default) # （学習率を減衰後、再び減衰させるまでに待つエポック数）
+    min_lr: 0 # 0(default) # （学習率の下限値）
+    eps: 1e-8 # 1e-8(default) # （学習率に適用される最小減衰）
+
+# Early Stopping
+early_stopping: 
+  patience: 5 # 3, 5(default), 7
+  verbose: True # True or False(default) # （表示の有無）
+  delta: 0 # 0(default), 1e-5, 1e-4, 1e-3, 1e-2 # （改善とみなす最小変化量）
+
+# 正規化（全体のデフォルト値）
+regularization:
+  dropout: 0.0 # 0.0(default), 0.1, 0.2, 0,3, 0.4, 0.5 # （学習中にランダムにニューロンを無効化）
+  normalization: None # BatchNorm, LayerNorm, None(default)
+  max_grad_norm: None # 1.0, 5.0, None(default) # （gradient clipping: 勾配クリッピング）
+  label_smoothing: 0.0 # 0.0(default), 0.1 # （分類タスクに用いる正規化）

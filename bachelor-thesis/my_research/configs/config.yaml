@@ -1,0 +1,89 @@
+# configs/config.yaml
+
+seed: 42 # null(Null, NULL, ~) or 0~
+
+topology: 
+  name: "ex_exp_b" # ex_exp_a, ex_exp_b, ex_exp_c, ex_eval_A, ex_eval_B, ex_eval_C, ex_eval_D, ex_eval_E
+  nodes: [0, 1, 2, 3, 4, 5]
+  links: 
+    - {u: 0, v: 1, capacity: 10000}
+    - {u: 0, v: 5, capacity: 10000}
+    - {u: 1, v: 2, capacity: 10000}
+    - {u: 1, v: 5, capacity: 10000}
+    - {u: 2, v: 3, capacity: 10000}
+    - {u: 2, v: 4, capacity: 10000}
+    - {u: 2, v: 5, capacity: 10000}
+    - {u: 3, v: 4, capacity: 10000}
+    - {u: 4, v: 5, capacity: 10000}
+
+bandwidth_options: [150, 300, 450, 600, 750, 900, 1000]
+
+lrrt: 
+  enabled: false
+  lr_min: 1e-6
+  lr_max: 1e-2
+
+train: 
+  train_lf_enabled: true
+  num_train_data: 100000
+  max_random_failure: 4
+  # train_ratio +val_ratio = 1
+  train_ratio: 0.8
+  val_ratio: 0.2
+  max_epoch: 1000
+
+test:
+  test_lf_enabled: false
+  num_test_data: 10000
+  num_failure: 1
+
+paths: 
+  configs: 
+    dir: "configs/"
+    filename: 
+      config_yaml: "config.yaml"
+      hparam_yaml: "hyperparameter.yaml"
+      runtime_yaml: "runtime.yaml"
+
+  data: 
+    train_dir: "data/raw/train/"
+    test_dir: "data/raw/test/"
+    filename: 
+      traffic_log_csv: "numt{numt}_traffic_log_{num}.csv"
+      data_csv: "numt{numt}_data_{num}.csv"
+      data_json: "numt{numt}_data_{num}.json"
+
+  datasets: 
+    train_dir: "data/datasets/train/"
+    test_dir: "data/datasets/test/"
+    filename: 
+      modality1_pt: "numt{numt}_modality1_{num}.pt"
+      modality2_pt: "numt{numt}_modality2_{num}.pt"
+      labels_pt: "numt{numt}_labels_{num}.pt"
+
+  lf_data:
+    train_dir: "data/raw/train/"
+    test_dir: "data/raw/test/"
+    filename: 
+      lf_traffic_log_csv: "numt{numt}_lf{k}_traffic_log_{num}.csv"
+      lf_data_csv: "numt{numt}_lf{k}_data_{num}.csv"
+      lf_data_json: "numt{numt}_lf{k}_data_{num}.json"
+
+  lf_datasets: 
+    train_dir: "data/datasets/train/"
+    test_dir: "data/datasets/test/"
+    filename: 
+      lf_modality1_pt: "numt{numt}_lf{k}_modality1_{num}.pt"
+      lf_modality2_pt: "numt{numt}_lf{k}_modality2_{num}.pt"
+      lf_labels_pt: "numt{numt}_lf{k}_labels_{num}.pt"
+
+  results: 
+    root_dir: "results/"
+    filename: 
+      lr_range_test_png: "lr_range_test.png"
+      checkpoint_pth: "checkpoint_model.pth"
+      lr_log_pt: "lr_log.pt"
+      train_log_pt: "train_log.pt"
+      val_log_pt: "val_log.pt"
+      result_json: "result.json"
+      output_csv: "output.csv"

@@ -1,0 +1,62 @@
+# configs/config.yaml
+
+experiment: 
+  compare_keys: 
+    - topology
+    - bandwidth_options
+    - lrrt
+    - train
+    - test
+
+topology: 
+  nodes: [0, 1, 2, 3, 4, 5]
+
+bandwidth_options: [150, 300, 450, 600, 750, 900, 1000]
+
+lrrt: 
+  enabled: true
+  lr_min: 1e-6
+  lr_max: 1e-2
+
+train: 
+  num_train_data: 100000
+  # train_ratio +val_ratio = 1
+  train_ratio: 0.8
+  val_ratio: 0.2
+  max_epoch: 1000
+
+test:
+  num_test_data: 10000
+
+paths: 
+  configs: 
+    dir: "configs/"
+    filename: 
+      config_yaml: "config.yaml"
+      hparam_yaml: "hyperparameter.yaml"
+      runtime_yaml: "runtime.yaml"
+
+  data: 
+    train_dir: "results/data/raw/train/"
+    test_dir: "results/data/raw/test/"
+    filename: 
+      traffic_log_csv: "traffic_log_{num}.csv"
+      data_csv: "data_{num}.csv"
+
+  datasets: 
+    train_dir: "results/data/datasets/train/"
+    test_dir: "results/data/datasets/test/"
+    filename: 
+      modality1_pt: "modality1_{num}.pt"
+      modality2_pt: "modality2_{num}.pt"
+      labels_pt: "labels_{num}.pt"
+
+  results: 
+    dir: "resutls/"
+    filename: 
+      checkpoint_pth: "checkpoint_model.pth"
+      lr_log_pt: "lr_log.pt"
+      train_log_pt: "train_log.pt"
+      val_log_pt: "val_log.pt"
+      inference_csv: "outputs.csv"
+      inference_json: "results.json"

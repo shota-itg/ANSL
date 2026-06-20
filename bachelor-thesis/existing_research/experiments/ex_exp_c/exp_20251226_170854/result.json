@@ -1,0 +1,204 @@
+{
+    "exp_id": "experiments/ex_exp_c/exp_20251226_170854",
+    "datetime": 1766736538.3674057,
+    "config": {
+        "topology": {
+            "name": "ex_exp_c",
+            "nodes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "links": [
+                {
+                    "u": 0,
+                    "v": 1,
+                    "capacity": 10000
+                },
+                {
+                    "u": 0,
+                    "v": 2,
+                    "capacity": 10000
+                },
+                {
+                    "u": 0,
+                    "v": 4,
+                    "capacity": 10000
+                },
+                {
+                    "u": 0,
+                    "v": 5,
+                    "capacity": 10000
+                },
+                {
+                    "u": 1,
+                    "v": 2,
+                    "capacity": 10000
+                },
+                {
+                    "u": 1,
+                    "v": 3,
+                    "capacity": 10000
+                },
+                {
+                    "u": 1,
+                    "v": 4,
+                    "capacity": 10000
+                },
+                {
+                    "u": 1,
+                    "v": 5,
+                    "capacity": 10000
+                },
+                {
+                    "u": 2,
+                    "v": 3,
+                    "capacity": 10000
+                },
+                {
+                    "u": 2,
+                    "v": 4,
+                    "capacity": 10000
+                },
+                {
+                    "u": 2,
+                    "v": 5,
+                    "capacity": 10000
+                },
+                {
+                    "u": 3,
+                    "v": 4,
+                    "capacity": 10000
+                },
+                {
+                    "u": 3,
+                    "v": 5,
+                    "capacity": 10000
+                },
+                {
+                    "u": 4,
+                    "v": 5,
+                    "capacity": 10000
+                }
+            ]
+        },
+        "bandwidth_options": [
+            150,
+            300,
+            450,
+            600,
+            750,
+            900,
+            1000
+        ],
+        "train": {
+            "num_train_data": 100000,
+            "train_ratio": 0.8,
+            "val_ratio": 0.2,
+            "max_epoch": 1000
+        },
+        "test": {
+            "num_test_data": 10000
+        }
+    },
+    "hyperparameters": {
+        "optimization": {
+            "learning_rate": 0.0001,
+            "train_batch_size": 64,
+            "inference_batch_size": 256,
+            "optimizer": "Adamax",
+            "weight_decay": 0
+        },
+        "architecture": {
+            "inputs_dim": 210,
+            "hidden_dim": 6300,
+            "hidden_depth": 3,
+            "outputs_dim": 1260,
+            "dropout": 0.0,
+            "activate": "ReLU",
+            "normalization": "None"
+        },
+        "schedule": {
+            "lr_scheduler": "None",
+            "warmup_steps": 1000,
+            "StepLR": {
+                "step_size": 10,
+                "gamma": 0.1,
+                "last_epoch": -1
+            },
+            "CosineAnnealingLR": {
+                "T_max": 10,
+                "eta_min": 0.0,
+                "last_epoch": -1
+            },
+            "ReduceLROnPlateau": {
+                "mode": "min",
+                "factor": 0.1,
+                "patience": 10,
+                "threshold": "1e-4",
+                "threshold_mode": "rel",
+                "cooldown": 0,
+                "min_lr": 0,
+                "eps": "1e-8"
+            }
+        },
+        "early_stopping": {
+            "patience": 5,
+            "delta": 0
+        },
+        "regularization": {
+            "dropout": 0.0,
+            "normalization": "None",
+            "max_grad_norm": "None",
+            "label_smoothing": 0.0
+        }
+    },
+    "results": {
+        "train": {
+            "learning_time": 2140.1260662078857,
+            "average_epoch_time": 71.30393251057329,
+            "final_epoch": 29,
+            "loss": {
+                "final_train_loss": 0.020719138905405998,
+                "final_val_loss": 0.021761901676654816
+            },
+            "accuracy": {
+                "final_train_demand_accuracy": 7.85,
+                "final_train_path_accuracy": 95.199125,
+                "final_train_element_accuracy": 99.1998611111111,
+                "final_val_demand_accuracy": 5.984575320512821,
+                "final_val_path_accuracy": 94.98180422008548,
+                "final_val_element_accuracy": 99.16360621438747
+            }
+        },
+        "inference": {
+            "inference_time": 0.4751710891723633,
+            "average_inference_time": 4.3153237455930466e-05,
+            "num_test_datasets": 10000,
+            "inference_batch_size": 256,
+            "accuracy": {
+                "test_demand_accuracy": 5.989583333333334,
+                "test_path_accuracy": 95.0,
+                "test_element_accuracy": 99.16666666666667
+            }
+        },
+        "routing_success_rate": {
+            "routing_success_evaluation_time": null,
+            "average_routing_success_evaluation_time": null,
+            "num_test_datasets": null,
+            "inference_batch_size": null,
+            "accuracy": {
+                "routing_success_rate": null
+            }
+        },
+        "link_failure_resilience": {
+            "routing_success_evaluation_time": null,
+            "average_routing_success_evaluation_time": null,
+            "num_test_datasets": null,
+            "inference_batch_size": null
+        }
+    }
+}

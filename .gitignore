@@ -1,0 +1,22 @@
+# 仮想環境
+pyenv_dl/
+
+# ライブラリ
+multimodal/
+
+# 実験結果（大容量）
+bachelor-thesis/my_research/results/
+bachelor-thesis/existing_research/results/
+
+# 大容量ファイル
+*.pth
+bachelor-thesis/existing_research/ieice/**/traffic_one_hot_log.csv
+
+# キャッシュ
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Windowsサムネイルキャッシュ
+Thumbs.db
+*:Zone.Identifier

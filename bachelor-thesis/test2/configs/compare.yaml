@@ -1,0 +1,8 @@
+# configs/compare.yaml
+
+compare_keys: 
+  - seed
+  - topology
+  - bandwidth_options
+  - train
+  - test

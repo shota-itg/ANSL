@@ -1,0 +1,9 @@
+# configs/runtime.yaml
+
+data:
+  data_name: train
+  num_train_data: 10000
+  num_test_data: 10000
+
+hyperparameter:
+  learning_rate: 1e-4
