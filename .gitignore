@@ -5,12 +5,17 @@ pyenv_dl/
 multimodal/
 
 # 実験結果（大容量）
-bachelor-thesis/my_research/results/
-bachelor-thesis/existing_research/results/
+bachelor/my_research/results/
+bachelor/existing_research/results/
 
 # 大容量ファイル
 *.pth
-bachelor-thesis/existing_research/ieice/**/traffic_one_hot_log.csv
+bachelor/existing_research/ieice/**/traffic_one_hot_log.csv
+
+# 修士研究の実験出力・不要物
+master/experiments/
+master/saved/
+master/Repetita.zip
 
 # キャッシュ
 __pycache__/
