@@ -129,7 +129,7 @@ if __name__ == "__main__":
     here = os.path.dirname(os.path.abspath(__file__))
     data_dir = os.path.join(here, "..", "Repetita", "data", "2016TopologyZooUCL_inverseCapacity")
     ds = build_dataset(os.path.join(data_dir, "Abilene.graph"),
-                       sorted(glob.glob(os.path.join(here, "Abilene.*.demands"))),
+                       sorted(glob.glob(os.path.join(data_dir, "Abilene.*.demands"))),
                        k=4)
     F, dist = ecmp_unit_flows(ds)
 
