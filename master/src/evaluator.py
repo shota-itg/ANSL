@@ -123,8 +123,8 @@ def default_od_pairs(tm, n_nodes, thresh=0.0):
 
 if __name__ == "__main__":
     import os, glob
-    from data_loader import build_dataset
-    from routing import ecmp_unit_flows
+    from src.data_loader import build_dataset
+    from src.routing import ecmp_unit_flows
 
     here = os.path.dirname(os.path.abspath(__file__))
     data_dir = os.path.join(here, "..", "Repetita", "data", "2016TopologyZooUCL_inverseCapacity")

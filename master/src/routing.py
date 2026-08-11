@@ -148,7 +148,7 @@ def check_flow_conservation(F, edges, n_nodes, atol=1e-4):
 
 if __name__ == "__main__":
     import os
-    from data_loader import build_dataset
+    from src.data_loader import build_dataset
     import glob
 
     here = os.path.dirname(os.path.abspath(__file__))
