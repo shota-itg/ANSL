@@ -24,6 +24,7 @@ from src.routing import ecmp_unit_flows
 from src.evaluator import (
     MLUEvaluator, build_path_load, default_od_pairs,
 )
+from src.baselines import optimal_mlu_mcf
 
 
 # --- 設定（当面はここを直接いじる。後で configs/*.yaml に移す想定）-------------
@@ -98,11 +99,11 @@ def main():
           f"include_direct={CONFIG['include_direct']}  "
           f"iters={CONFIG['iters']}  lr={CONFIG['lr']}\n")
 
-    header = f"{'TM':>3} | {'SPF':>8} | {'連続最適':>8} | {'丸め後':>8} | {'SPF比(丸め)':>10}"
+    header = f"{'TM':>3} | {'SPF':>8} | {'MCF最適':>8} | {'連続最適':>8} | {'丸め後':>8} | {'最適比(連続)':>10}"
     print(header)
     print("-" * len(header))
 
-    agg = {"spf": [], "cont": [], "round": []}
+    agg = {"spf": [], "mcf": [], "cont": [], "round": []}
     for ti in range(tms.shape[0]):
         tm = tms[ti]
         od_pairs, demand = default_od_pairs(tm, n)
@@ -111,23 +112,27 @@ def main():
         ev = MLUEvaluator(path_load, ds["cap"])
 
         spf = spf_mlu(ev, demand)
+        mcf = optimal_mlu_mcf(ds["edges"], ds["cap"], tm, n)   # 理論最適（下限）
         res = optimize_tm(ev, demand, CONFIG["iters"], CONFIG["lr"], CONFIG["seed"])
         cont, rnd = res["cont_mlu"], res["round_mlu"]
-        ratio = rnd / spf  # 1未満なら SPF より改善
+        ratio = cont / mcf  # 1に近いほど連続最適が理論最適に迫れている
 
-        agg["spf"].append(spf); agg["cont"].append(cont); agg["round"].append(rnd)
-        print(f"{ti:>3} | {spf:>8.4f} | {cont:>8.4f} | {rnd:>8.4f} | {ratio:>10.3f}")
+        agg["spf"].append(spf); agg["mcf"].append(mcf)
+        agg["cont"].append(cont); agg["round"].append(rnd)
+        print(f"{ti:>3} | {spf:>8.4f} | {mcf:>8.4f} | {cont:>8.4f} | {rnd:>8.4f} | {ratio:>10.3f}")
 
     def mean(x):
         return sum(x) / len(x)
     print("-" * len(header))
-    print(f"{'平均':>3} | {mean(agg['spf']):>8.4f} | {mean(agg['cont']):>8.4f} | "
-          f"{mean(agg['round']):>8.4f} | {mean([r/s for r,s in zip(agg['round'],agg['spf'])]):>10.3f}")
+    print(f"{'平均':>3} | {mean(agg['spf']):>8.4f} | {mean(agg['mcf']):>8.4f} | "
+          f"{mean(agg['cont']):>8.4f} | {mean(agg['round']):>8.4f} | "
+          f"{mean([c/m for c,m in zip(agg['cont'],agg['mcf'])]):>10.3f}")
 
     print("\n[読み方]")
-    print("  連続最適 < SPF なら、2-SR中継モデルで直接最適化すれば SPF より改善する余地がある。")
+    print("  MCF最適 = 経路自由分割の理論下限（誰もこれ以下にはできない）。")
+    print("  最適比(連続) = 連続最適/MCF最適。1.0 なら 2-SR中継モデルが理論最適に到達。")
     print("  丸め後 - 連続最適 が、単一SRパス化(argmax)で失う分（丸めコスト）。")
-    print("  ここでの『連続最適』は TM を見て最適化した到達目標。STEP 4 の NN は")
+    print("  『連続最適』は TM を見て最適化した到達目標。STEP 4 の NN は")
     print("  TM を見ずにこの値へどれだけ近づけるかで評価する。")
 
 
