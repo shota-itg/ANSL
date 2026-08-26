@@ -1,0 +1,3 @@
+# method  mean_ms  std_ms
+Proposed(NN+round)  0.129735  0.029053
+MCF(lower-bound)    3.809671  0.691449

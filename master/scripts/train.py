@@ -199,6 +199,31 @@ def main():
     print(f"  SPFに対する平均改善率(連続) = {impr:.1%}")
     if _HAS_MCF:
         print(f"  SPF→MCF間の平均到達度(連続) = {reach:.1%}  (1.0でMCF最適、0でSPF並み)")
+
+    # --- 図1（平均MLU）と図2（計算時間）用の成果物を書き出す --------------------
+    out_dir = os.path.join(here, "..", "results")
+    os.makedirs(out_dir, exist_ok=True)
+
+    # (a) 学習済みモデル → measure_time.py が読む checkpoint（順伝播時間の計測用）
+    torch.save(model.state_dict(), os.path.join(out_dir, "model.pt"))
+
+    # (b) 図1の棒グラフ用サマリ: method  mean_mlu  std_mlu
+    #     提案手法は「丸めのみ」(= NN丸め)。列順は [SPF, NN連続, NN丸め, MCF]
+    sd = r.std(dim=0, unbiased=False).tolist()
+    with open(os.path.join(out_dir, "mlu_summary.dat"), "w") as f:
+        f.write("# method  mean_mlu  std_mlu\n")
+        f.write(f"SPF                 {spf_m:.6f}  {sd[0]:.6f}\n")
+        f.write(f"Proposed(round)     {round_m:.6f}  {sd[2]:.6f}\n")
+        if _HAS_MCF:
+            f.write(f"MCF(lower-bound)    {mcf_m:.6f}  {sd[3]:.6f}\n")
+
+    # (c) 図1のエラーバー・点検用: テストTMごとの生値
+    with open(os.path.join(out_dir, "mlu_perTM.dat"), "w") as f:
+        f.write("# idx  SPF  NN_cont  NN_round  MCF\n")
+        for k, (spf_i, cont_i, round_i, mcf_i) in enumerate(rows):
+            f.write(f"{k}  {spf_i:.6f}  {cont_i:.6f}  {round_i:.6f}  {mcf_i:.6f}\n")
+
+    print("\n[out] results/model.pt, mlu_summary.dat, mlu_perTM.dat を書き出しました")
  
     print("\n[読み方]")
     print("  NN(連続) が SPF より小さければ、TMを見ずに出したαでも混雑を減らせている。")

@@ -1,0 +1,4 @@
+# method  mean_mlu  std_mlu
+SPF                 1.191034  0.309156
+Proposed(round)     0.986602  0.244882
+MCF(lower-bound)    0.960189  0.240202
